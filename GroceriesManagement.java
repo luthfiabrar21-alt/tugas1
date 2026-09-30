@@ -1,16 +1,15 @@
 package OOPKelas.tugas1;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
 public class GroceriesManagement {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        HashSet<String> barang = new HashSet<String>();
-        int pilihan = 0;
-        String namaBarang;
-        // String[] barang = new String[50];
-
+        ArrayList<String> items = new ArrayList<String>();
+        int choice = 0;
+        String itemName;
 
         do {
             System.out.println("1. Add Item");
@@ -21,35 +20,46 @@ public class GroceriesManagement {
             System.out.print("Input Your Choice: ");
 
             try {
-                pilihan = input.nextInt();
+                choice = input.nextInt();
                 input.nextLine();
             } catch (Exception e) {
                 System.out.println("Input Invalid");
                 input.nextLine();
-                pilihan = 0;
+                choice = 0;
             }
 
-            switch (pilihan) {
+            switch (choice) {
                 case 1:
                     System.out.print("Enter item name: ");
-                    namaBarang = input.nextLine();
-                    boolean validasiAdd = barang.add(namaBarang);
-                    if (validasiAdd == true) {
-                        System.out.println("Item Added!");
+                    itemName = input.nextLine().trim().toLowerCase();
+                    
+                    if(itemName.trim().isEmpty()){
+                        System.out.println("Dont empty");
                         System.out.println();
-                    } else {
+                    }
+                    else if (items.contains(itemName)) {
                         System.out.println("Item Already Exist");
+                        System.out.println();
+                    }
+                    else{
+                        items.add(itemName);
+                        System.out.println("Item Added!");
                         System.out.println();
                     }
                     break;
                 case 2:
                     System.out.print("Enter Item to Remove: ");
-                    String namaHapus = input.nextLine();
-                    boolean validasiRemove = barang.remove(namaHapus);
+                    String namaHapus = input.nextLine().trim().toLowerCase();
+                    boolean validasiRemove = items.remove(namaHapus);
                     if (validasiRemove == true) {
                         System.out.println(namaHapus + " Removed!");
                         System.out.println();
-                    } else {
+                    } 
+                    else if (namaHapus.trim().isEmpty()){
+                        System.out.println("Dont empty");
+                        System.out.println();
+                    }
+                    else {
                         System.out.println("Item Not Found");
                         System.out.println();
                     }
@@ -58,29 +68,34 @@ public class GroceriesManagement {
                     System.out.print("Enter search keyword: ");
                     String namaSearch =  input.nextLine().trim().toLowerCase();
                     System.out.println("Search Results: ");
-                    boolean validasiSearch = false;
 
-
-                    for(String nama: barang){
-                        if (nama.toLowerCase().contains(namaSearch)) {
-                            System.out.println("- " + nama);
-                            validasiSearch = true;
-                        }
+                    if(namaSearch.trim().isEmpty()){
+                        System.out.println("Dont empty");
+                        System.out.println(); 
                     }
-                    System.out.println();
-                    if (!validasiSearch) {
-                        System.out.println("No item match your search.");
+
+                    else{
+                        boolean found = false;
+                        for(String itemSearch: items){
+                            if (itemSearch.toLowerCase().contains(namaSearch)) {
+                                System.out.println("- " + itemSearch.substring(0,1).toUpperCase() + itemSearch.substring(1).toLowerCase());
+                                found = true;
+                            }
+                        }
+                        if (!found) {
+                            System.out.println("No item match your search.");
+                        }
                         System.out.println();
                     }
                     break;
                 case 4:
                     int nomor = 1;
                     System.out.println("Your grocery List: ");
-                    for(String nama: barang){
-                        System.out.printf("%d. %s\n", nomor,nama);
+                    for(String itemView: items){
+                        System.out.printf("%d. %s\n", nomor,itemView.substring(0,1).toUpperCase() + itemView.substring(1).toLowerCase());
                         nomor++;
                     }
-                    System.out.println("Total Items: " +  barang.size());
+                    System.out.println("Total Items: " +  items.size());
                     System.out.println();
                     break;
                 case 5:
@@ -92,7 +107,7 @@ public class GroceriesManagement {
                     System.out.println();
                     break;
             }
-        } while (pilihan != 5);
+        } while (choice != 5);
         
 
     }
